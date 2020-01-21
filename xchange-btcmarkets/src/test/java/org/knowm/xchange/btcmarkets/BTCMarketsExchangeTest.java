@@ -1,7 +1,6 @@
 package org.knowm.xchange.btcmarkets;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.fail;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -11,7 +10,6 @@ import org.knowm.xchange.btcmarkets.service.BTCMarketsTestSupport;
 import org.knowm.xchange.currency.CurrencyPair;
 import org.knowm.xchange.utils.nonce.CurrentTimeNonceFactory;
 import org.powermock.reflect.Whitebox;
-
 import si.mazi.rescu.SynchronizedValueFactory;
 
 public class BTCMarketsExchangeTest extends BTCMarketsTestSupport {
@@ -21,7 +19,9 @@ public class BTCMarketsExchangeTest extends BTCMarketsTestSupport {
 
   @Before
   public void setUp() throws Exception {
-    exchange = (BTCMarketsExchange) ExchangeFactory.INSTANCE.createExchange(BTCMarketsExchange.class.getCanonicalName());
+    exchange =
+        (BTCMarketsExchange)
+            ExchangeFactory.INSTANCE.createExchange(BTCMarketsExchange.class.getCanonicalName());
     exchangeSpecification = new ExchangeSpecification(BTCMarketsExchange.class);
   }
 
@@ -32,7 +32,10 @@ public class BTCMarketsExchangeTest extends BTCMarketsTestSupport {
     exchange.applySpecification(exchange.getDefaultExchangeSpecification());
 
     // then
-    assertThat((BTCMarketsExchange) Whitebox.getInternalState(exchange.getMarketDataService(), "exchange")).isEqualTo(exchange);
+    assertThat(
+            (BTCMarketsExchange)
+                Whitebox.getInternalState(exchange.getMarketDataService(), "exchange"))
+        .isEqualTo(exchange);
     assertThat(exchange.getTradeService()).isNull();
     assertThat(exchange.getAccountService()).isNull();
   }
@@ -41,7 +44,9 @@ public class BTCMarketsExchangeTest extends BTCMarketsTestSupport {
   public void shouldApplyDefaultSpecificationWithKeys() {
     // given
     exchangeSpecification = exchange.getDefaultExchangeSpecification();
-    exchangeSpecification.getExchangeSpecificParameters().put(BTCMarketsExchange.CURRENCY_PAIR, CurrencyPair.BTC_AUD);
+    exchangeSpecification
+        .getExchangeSpecificParameters()
+        .put(BTCMarketsExchange.CURRENCY_PAIR, CurrencyPair.BTC_AUD);
     exchangeSpecification.setApiKey(SPECIFICATION_API_KEY);
     exchangeSpecification.setSecretKey(SPECIFICATION_SECRET_KEY);
 
@@ -49,15 +54,25 @@ public class BTCMarketsExchangeTest extends BTCMarketsTestSupport {
     exchange.applySpecification(exchangeSpecification);
 
     // then
-    assertThat((BTCMarketsExchange) Whitebox.getInternalState(exchange.getMarketDataService(), "exchange")).isEqualTo(exchange);
-    assertThat((BTCMarketsExchange) Whitebox.getInternalState(exchange.getTradeService(), "exchange")).isEqualTo(exchange);
-    assertThat((BTCMarketsExchange) Whitebox.getInternalState(exchange.getAccountService(), "exchange")).isEqualTo(exchange);
+    assertThat(
+            (BTCMarketsExchange)
+                Whitebox.getInternalState(exchange.getMarketDataService(), "exchange"))
+        .isEqualTo(exchange);
+    assertThat(
+            (BTCMarketsExchange) Whitebox.getInternalState(exchange.getTradeService(), "exchange"))
+        .isEqualTo(exchange);
+    assertThat(
+            (BTCMarketsExchange)
+                Whitebox.getInternalState(exchange.getAccountService(), "exchange"))
+        .isEqualTo(exchange);
   }
 
   @Test
   public void shouldApplySpecificationWithKeys() {
     // given
-    exchangeSpecification.getExchangeSpecificParameters().put(BTCMarketsExchange.CURRENCY_PAIR, CurrencyPair.BTC_AUD);
+    exchangeSpecification
+        .getExchangeSpecificParameters()
+        .put(BTCMarketsExchange.CURRENCY_PAIR, CurrencyPair.BTC_AUD);
     exchangeSpecification.setApiKey(SPECIFICATION_API_KEY);
     exchangeSpecification.setSecretKey(SPECIFICATION_SECRET_KEY);
 
@@ -65,9 +80,17 @@ public class BTCMarketsExchangeTest extends BTCMarketsTestSupport {
     exchange.applySpecification(exchangeSpecification);
 
     // then
-    assertThat((BTCMarketsExchange) Whitebox.getInternalState(exchange.getMarketDataService(), "exchange")).isEqualTo(exchange);
-    assertThat((BTCMarketsExchange) Whitebox.getInternalState(exchange.getTradeService(), "exchange")).isEqualTo(exchange);
-    assertThat((BTCMarketsExchange) Whitebox.getInternalState(exchange.getAccountService(), "exchange")).isEqualTo(exchange);
+    assertThat(
+            (BTCMarketsExchange)
+                Whitebox.getInternalState(exchange.getMarketDataService(), "exchange"))
+        .isEqualTo(exchange);
+    assertThat(
+            (BTCMarketsExchange) Whitebox.getInternalState(exchange.getTradeService(), "exchange"))
+        .isEqualTo(exchange);
+    assertThat(
+            (BTCMarketsExchange)
+                Whitebox.getInternalState(exchange.getAccountService(), "exchange"))
+        .isEqualTo(exchange);
   }
 
   @Test
@@ -79,7 +102,10 @@ public class BTCMarketsExchangeTest extends BTCMarketsTestSupport {
     exchange.applySpecification(exchangeSpecification);
 
     // then
-    assertThat((BTCMarketsExchange) Whitebox.getInternalState(exchange.getMarketDataService(), "exchange")).isEqualTo(exchange);
+    assertThat(
+            (BTCMarketsExchange)
+                Whitebox.getInternalState(exchange.getMarketDataService(), "exchange"))
+        .isEqualTo(exchange);
     assertThat(exchange.getTradeService()).isNull();
     assertThat(exchange.getAccountService()).isNull();
   }
@@ -93,18 +119,19 @@ public class BTCMarketsExchangeTest extends BTCMarketsTestSupport {
     exchange.applySpecification(exchangeSpecification);
 
     // then
-    assertThat((BTCMarketsExchange) Whitebox.getInternalState(exchange.getMarketDataService(), "exchange")).isEqualTo(exchange);
+    assertThat(
+            (BTCMarketsExchange)
+                Whitebox.getInternalState(exchange.getMarketDataService(), "exchange"))
+        .isEqualTo(exchange);
     assertThat(exchange.getTradeService()).isNull();
     assertThat(exchange.getAccountService()).isNull();
   }
 
-  @Test(expected = NullPointerException.class)
-  public void shouldFailWhenApplyNullSpecification() {
-    // when
+  @Test
+  public void shouldUseDefaultExchangeSpecForNullSpecification() {
     exchange.applySpecification(null);
-
-    // then
-    fail("BTCMarketsExchange should throw NullPointerException when tries to apply null specification");
+    assertThat(exchange.getExchangeSpecification())
+        .isEqualToComparingFieldByField(exchange.getDefaultExchangeSpecification());
   }
 
   @Test
@@ -113,7 +140,8 @@ public class BTCMarketsExchangeTest extends BTCMarketsTestSupport {
     ExchangeSpecification specification = exchange.getDefaultExchangeSpecification();
 
     // then
-    assertThat(specification.getExchangeClassName()).isEqualTo(BTCMarketsExchange.class.getCanonicalName());
+    assertThat(specification.getExchangeClassName())
+        .isEqualTo(BTCMarketsExchange.class.getCanonicalName());
     assertThat(specification.getExchangeName()).isEqualTo("BTCMarkets");
     assertThat(specification.getSslUri()).isEqualTo("https://api.btcmarkets.net");
     assertThat(specification.getHost()).isEqualTo("btcmarkets.net");
@@ -131,5 +159,4 @@ public class BTCMarketsExchangeTest extends BTCMarketsTestSupport {
     assertThat(factory).isNotNull();
     assertThat(factory instanceof CurrentTimeNonceFactory).isTrue();
   }
-
 }
